@@ -1,15 +1,12 @@
 // high level file to test out behavior
-
-import { connect } from "mongoose";
-import { NodeModel } from "./packages/database/models/node";
+import { DBQueue } from "./packages/database/db-queue";
 
 (async () => {
-  await connect("mongodb://127.0.0.1:27017/wiki-crawler");
+  const queue = new DBQueue();
+  await queue.initialize();
 
-  const node = new NodeModel({ title: "help", outgoingPages: ["1", "2", "3"] });
-  await node.save();
-  console.log("done!");
+  await queue.push({ title: "Albert Einstein" });
 
-  const help = await NodeModel.find();
-  console.log(help);
+  const out = await queue.peek();
+  console.log(out);
 })();

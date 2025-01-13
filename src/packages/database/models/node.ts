@@ -5,9 +5,12 @@ export interface INode {
   outgoingPages: string[];
 }
 
-const nodeSchema = new Schema<INode>({
-  title: { type: String, required: true },
-  outgoingPages: { type: [String], required: false, default: [] },
-});
+const nodeSchema = new Schema<INode>(
+  {
+    title: { type: String, required: true },
+    outgoingPages: { type: [String], required: false, default: [] },
+  },
+  { timestamps: { createdAt: "created", updatedAt: "updated" } },
+);
 
 export const NodeModel = model<INode>("Node", nodeSchema);

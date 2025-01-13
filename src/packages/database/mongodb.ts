@@ -24,7 +24,7 @@ export class MongoInstance {
 export class MongoSingleton {
   private static instance: MongoInstance | undefined;
 
-  getInstance(): MongoInstance {
+  static getInstance(): MongoInstance {
     if (!MongoSingleton.instance) {
       MongoSingleton.instance = new MongoInstance();
     }
