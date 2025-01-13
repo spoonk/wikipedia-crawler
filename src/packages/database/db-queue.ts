@@ -18,11 +18,14 @@ export class DBQueue {
     this.initialized = true;
   }
 
+  async contains(title: string) {
+    const existing = await QueueItemModel.findOne({ title });
+    return existing !== null;
+  }
+
   async push(item: QueueItem) {
     const queueItem = new QueueItemModel(item);
-
-    const existing = await QueueItemModel.findOne({ title: item.title });
-    if (existing !== null) {
+    if (await this.contains(item.title)) {
       console.warn(`skipping adding duplicate queue item ${item.title}`);
       return;
     }
@@ -34,6 +37,8 @@ export class DBQueue {
     return this.getNext();
   }
 
+  // NOTE: should not use pop since it's not
+  //  crash safe. Final version should use a peek + delete separately
   async pop(): Promise<QueueItem> {
     const item = await this.getNext();
 

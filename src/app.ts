@@ -1,12 +1,10 @@
 // high level file to test out behavior
-import { DBQueue } from "./packages/database/db-queue";
+import { WikipediaCrawler } from "./crawler/crawler";
 
 (async () => {
-  const queue = new DBQueue();
-  await queue.initialize();
-
-  await queue.push({ title: "Albert Einstein" });
-
-  const out = await queue.peek();
-  console.log(out);
+  const crawler = new WikipediaCrawler();
+  await crawler.initialize();
+  for (let i = 0; i < 5; i++) {
+    await crawler.step();
+  }
 })();

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "delay": "^6.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^8.9.4"
   }
