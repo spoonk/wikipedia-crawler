@@ -16,6 +16,16 @@ export class DBGraph {
 
   async addNode(node: INode) {
     const nodeModel = new NodeModel(node);
-    await nodeModel.save();
+    const existing = await NodeModel.findOne({ title: node.title });
+    if (existing) {
+      console.warn(`node with title ${node.title} already exists, skipping`);
+      return;
+    }
+
+    await nodeModel.save(); // TODO: dedupe on name
+  }
+
+  async size() {
+    return await NodeModel.countDocuments();
   }
 }

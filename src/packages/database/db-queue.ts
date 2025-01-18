@@ -10,7 +10,7 @@ export class DBQueue {
   }
 
   async size() {
-    await QueueItemModel.countDocuments();
+    return await QueueItemModel.countDocuments();
   }
 
   async initialize() {

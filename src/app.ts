@@ -6,5 +6,6 @@ import { WikipediaCrawler } from "./crawler/crawler";
   await crawler.initialize();
   for (let i = 0; i < 5; i++) {
     await crawler.step();
+    console.log(crawler.getMetrics());
   }
 })();

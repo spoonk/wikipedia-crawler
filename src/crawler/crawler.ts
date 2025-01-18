@@ -4,22 +4,31 @@ import { DBGraph } from "../packages/database/db-graph";
 import { DBQueue } from "../packages/database/db-queue";
 import { DBSet } from "../packages/database/db-set";
 import { INode } from "../packages/database/models/node";
+import { CrawlerMetrics } from "./crawler-metrics";
+import * as bb from "bluebird";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
   private graph: DBGraph;
   private set: DBSet;
 
+  private metrics: CrawlerMetrics;
+
   constructor() {
     this.queue = new DBQueue();
     this.graph = new DBGraph();
     this.set = new DBSet();
+    this.metrics = {
+      queueSize: -1,
+      numProcessedPages: -1,
+    };
   }
 
   async initialize() {
     await this.queue.initialize();
     await this.graph.initialize();
     await this.set.initialize();
+    await this.syncMetrics();
 
     // add seed item if queue empty
     if (!(await this.set.contains("Albert Einstein"))) {
@@ -41,7 +50,20 @@ export class WikipediaCrawler {
       await this.queue.push({ title: page });
     }
 
-    await this.graph.addNode(node);
-    await this.set.addItem({ title });
+    await bb.Promise.all([
+      this.graph.addNode(node),
+      this.set.addItem({ title }),
+    ]);
+
+    await this.syncMetrics();
+  }
+
+  getMetrics() {
+    return this.metrics;
+  }
+
+  private async syncMetrics() {
+    this.metrics.queueSize = await this.queue.size();
+    this.metrics.numProcessedPages = await this.graph.size();
   }
 }
