@@ -20,7 +20,7 @@ const Example = () => {
           ...previousTests,
           {
             id: previousTests.length,
-            title: `Test #${previousTests.length + 1}`,
+            title: `Test ${previousTests.length + 1}`,
           },
         ]);
 

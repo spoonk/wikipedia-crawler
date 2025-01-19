@@ -8,7 +8,7 @@ export class MongoInstance {
 
   async initialize() {
     if (this.initialized) {
-      console.warn("mongo instance already connected");
+      //console.warn("mongo instance already connected");
       return;
     }
 

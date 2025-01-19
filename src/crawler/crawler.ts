@@ -1,11 +1,13 @@
 import delay from "delay";
-import { getOutgoingPageTitles } from "../packages/apis/wikipedia-api";
-import { DBGraph } from "../packages/database/db-graph";
-import { DBQueue } from "../packages/database/db-queue";
-import { DBSet } from "../packages/database/db-set";
-import { INode } from "../packages/database/models/node";
-import { CrawlerMetrics } from "./crawler-metrics";
+import { getOutgoingPageTitles } from "../packages/apis/wikipedia-api.js";
+import { DBGraph } from "../packages/database/db-graph.js";
+import { DBQueue } from "../packages/database/db-queue.js";
+import { DBSet } from "../packages/database/db-set.js";
+import { INode } from "../packages/database/models/node.js";
+import { CrawlerMetrics } from "./crawler-metrics.js";
 import * as bb from "bluebird";
+import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
+import _ from "lodash";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
@@ -38,23 +40,17 @@ export class WikipediaCrawler {
 
   async step() {
     const { title } = await this.queue.pop();
-    console.log(`querying pages for ${title}`);
 
     const outgoing = await getOutgoingPageTitles(title);
-
-    await delay(5 * 1000); // delay 5s to further reduce api spam
+    await delay(1.2 * 1000);
     const node: INode = { title, outgoingPages: outgoing };
 
     for (const page of outgoing) {
       if (await this.set.contains(page)) continue;
       await this.queue.push({ title: page });
     }
-
-    await bb.Promise.all([
-      this.graph.addNode(node),
-      this.set.addItem({ title }),
-    ]);
-
+    await this.graph.addNode(node);
+    await this.set.addItem({ title });
     await this.syncMetrics();
   }
 
@@ -63,7 +59,10 @@ export class WikipediaCrawler {
   }
 
   private async syncMetrics() {
-    this.metrics.queueSize = await this.queue.size();
-    this.metrics.numProcessedPages = await this.graph.size();
+    this.metrics = {
+      queueSize: await this.queue.size(),
+      numProcessedPages: await this.graph.size(),
+    };
+    MetricPubSub.pushMetrics(this.metrics);
   }
 }

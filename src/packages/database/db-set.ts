@@ -1,5 +1,5 @@
-import { SetItemModel, SetItem } from "./models/set-item";
-import { MongoSingleton, MongoInstance } from "./mongodb";
+import { SetItemModel, SetItem } from "./models/set-item.js";
+import { MongoSingleton, MongoInstance } from "./mongodb.js";
 
 export class DBSet {
   private mongo: MongoInstance;

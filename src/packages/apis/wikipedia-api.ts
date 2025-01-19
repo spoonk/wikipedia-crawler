@@ -28,7 +28,7 @@ export async function getOutgoingPageTitles(title: string): Promise<string[]> {
   });
 
   if (!data?.query?.pages) {
-    console.warn(`request failed for ${title}`, data);
+    //console.warn(`request failed for ${title}`, data);
     return [];
   }
 

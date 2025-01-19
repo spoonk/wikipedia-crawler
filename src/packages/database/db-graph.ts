@@ -1,5 +1,5 @@
-import { INode, NodeModel } from "./models/node";
-import { MongoSingleton, MongoInstance } from "./mongodb";
+import { INode, NodeModel } from "./models/node.js";
+import { MongoSingleton, MongoInstance } from "./mongodb.js";
 
 export class DBGraph {
   private mongo: MongoInstance;
@@ -18,7 +18,7 @@ export class DBGraph {
     const nodeModel = new NodeModel(node);
     const existing = await NodeModel.findOne({ title: node.title });
     if (existing) {
-      console.warn(`node with title ${node.title} already exists, skipping`);
+      //console.warn(`node with title ${node.title} already exists, skipping`);
       return;
     }
 
