@@ -5,7 +5,6 @@ import { DBQueue } from "../packages/database/db-queue.js";
 import { DBSet } from "../packages/database/db-set.js";
 import { INode } from "../packages/database/models/node.js";
 import { CrawlerMetrics } from "./crawler-metrics.js";
-import * as bb from "bluebird";
 import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
 
 export class WikipediaCrawler {
@@ -40,7 +39,7 @@ export class WikipediaCrawler {
   }
 
   async step() {
-    const { title } = await this.queue.pop();
+    const { title } = await this.queue.peek();
 
     const outgoing = await getOutgoingPageTitles(title);
     await delay(1.2 * 1000);
@@ -52,7 +51,9 @@ export class WikipediaCrawler {
     }
 
     await this.graph.addNode(node);
+    await this.queue.delete(title);
     await this.set.addItem({ title });
+
     await this.syncMetrics(title, outgoing.length);
   }
 

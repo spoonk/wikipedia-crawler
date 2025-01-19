@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Newline, Text, render } from "ink";
+import { Box, Text, render } from "ink";
 import { useMetrics } from "./use-metrics.js";
 import { useCrawler } from "./use-crawler.js";
 import _ from "lodash";

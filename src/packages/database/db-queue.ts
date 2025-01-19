@@ -26,7 +26,6 @@ export class DBQueue {
   async push(item: QueueItem) {
     const queueItem = new QueueItemModel(item);
     if (await this.contains(item.title)) {
-      //console.warn(`skipping adding duplicate queue item ${item.title}`);
       return;
     }
 
@@ -35,6 +34,10 @@ export class DBQueue {
 
   async peek() {
     return this.getNext();
+  }
+
+  async delete(title: string) {
+    await QueueItemModel.findOneAndDelete({ title });
   }
 
   // NOTE: should not use pop since it's not
