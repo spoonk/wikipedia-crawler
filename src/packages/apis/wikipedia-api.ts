@@ -3,6 +3,15 @@ import _ from "lodash";
 
 const BASE_URL = "https://en.wikipedia.org/w/api.php";
 
+interface getParams {
+  action: string;
+  format: string;
+  prop: string;
+  titles: string;
+  pllimit: "max";
+  plcontinue?: string;
+}
+
 interface getResponse {
   query: {
     pages: {
@@ -24,16 +33,19 @@ export async function getOutgoingPageTitles(title: string): Promise<string[]> {
   let nextPage: null | string = null;
   const links = [];
   do {
-    const { data } = await axios.get<getResponse>(BASE_URL, {
-      params: {
-        action: "query",
-        format: "json",
-        prop: "links",
-        titles: title,
-        pllimit: "max",
-        plcontinue: nextPage,
+    const data: getResponse = await axios.get<getParams, getResponse>(
+      BASE_URL,
+      {
+        params: {
+          action: "query",
+          format: "json",
+          prop: "links",
+          titles: title,
+          pllimit: "max",
+          plcontinue: nextPage,
+        },
       },
-    });
+    );
 
     if (data.continue?.plcontinue) {
       nextPage = data.continue.plcontinue;

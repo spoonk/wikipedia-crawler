@@ -10,7 +10,7 @@ import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
 export class WikipediaCrawler {
   private queue: DBQueue;
   private graph: DBGraph;
-  private set: DBSet;
+  private set: DBSet; // note: set is redundant, could just check DBGraph for what is 'seen'
 
   private metrics: CrawlerMetrics;
 
