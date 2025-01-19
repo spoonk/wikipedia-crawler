@@ -4,6 +4,8 @@ import { CrawlerMetrics } from "../crawler/crawler-metrics.js";
 
 export function useMetrics() {
   const [metrics, setMetrics] = useState<CrawlerMetrics>({
+    title: "",
+    numOutgoingPages: 0,
     queueSize: 0,
     numProcessedPages: 0,
   });

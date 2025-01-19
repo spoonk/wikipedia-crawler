@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { WikipediaCrawler } from "../crawler/crawler.js";
 
 export function useCrawler() {

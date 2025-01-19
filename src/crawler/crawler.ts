@@ -7,7 +7,6 @@ import { INode } from "../packages/database/models/node.js";
 import { CrawlerMetrics } from "./crawler-metrics.js";
 import * as bb from "bluebird";
 import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
-import _ from "lodash";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
@@ -21,6 +20,8 @@ export class WikipediaCrawler {
     this.graph = new DBGraph();
     this.set = new DBSet();
     this.metrics = {
+      title: "",
+      numOutgoingPages: 0,
       queueSize: -1,
       numProcessedPages: -1,
     };
@@ -30,7 +31,7 @@ export class WikipediaCrawler {
     await this.queue.initialize();
     await this.graph.initialize();
     await this.set.initialize();
-    await this.syncMetrics();
+    await this.syncMetrics("", 0);
 
     // add seed item if queue empty
     if (!(await this.set.contains("Albert Einstein"))) {
@@ -49,17 +50,20 @@ export class WikipediaCrawler {
       if (await this.set.contains(page)) continue;
       await this.queue.push({ title: page });
     }
+
     await this.graph.addNode(node);
     await this.set.addItem({ title });
-    await this.syncMetrics();
+    await this.syncMetrics(title, outgoing.length);
   }
 
   getMetrics() {
     return this.metrics;
   }
 
-  private async syncMetrics() {
+  private async syncMetrics(title: string, numOutgoingPages: number) {
     this.metrics = {
+      title,
+      numOutgoingPages,
       queueSize: await this.queue.size(),
       numProcessedPages: await this.graph.size(),
     };
