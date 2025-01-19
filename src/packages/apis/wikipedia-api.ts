@@ -14,23 +14,42 @@ interface getResponse {
       };
     };
   };
+  continue?: {
+    plcontinue: string;
+    continue: string;
+  };
 }
 
 export async function getOutgoingPageTitles(title: string): Promise<string[]> {
-  const { data } = await axios.get<getResponse>(BASE_URL, {
-    params: {
-      action: "query",
-      format: "json",
-      prop: "links",
-      titles: title,
-      pllimit: "max",
-    },
-  });
+  let nextPage: null | string = null;
+  const links = [];
+  do {
+    const { data } = await axios.get<getResponse>(BASE_URL, {
+      params: {
+        action: "query",
+        format: "json",
+        prop: "links",
+        titles: title,
+        pllimit: "max",
+        plcontinue: nextPage,
+      },
+    });
 
-  if (!data?.query?.pages) {
-    //console.warn(`request failed for ${title}`, data);
-    return [];
-  }
+    if (data.continue?.plcontinue) {
+      nextPage = data.continue.plcontinue;
+    } else {
+      nextPage = null;
+    }
 
-  return _.map(Object.values(data.query.pages)[0].links, ({ title }) => title);
+    if (!data?.query?.pages) {
+      return links;
+    }
+
+    links.push(
+      ..._.map(Object.values(data.query.pages)[0].links, ({ title }) => title),
+    );
+  } while (nextPage);
+  return links;
 }
+
+getOutgoingPageTitles("Albert Einstein");
