@@ -5,9 +5,9 @@ import { channels } from "../packages/utils/channels.js";
 export function useMetrics() {
   const [crawlerMetrics, setMetrics] = useState<CrawlerMetrics>({
     title: "",
-    numOutgoingPages: 0,
-    queueSize: 0,
-    numProcessedPages: 0,
+    numOutgoingPages: null,
+    queueSize: null,
+    numProcessedPages: null,
   });
 
   const [wikiTiming, setWikiTiming] = useState<number>(0);

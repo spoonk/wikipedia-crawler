@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
-export function useMetricHistory(metric: number) {
-  const [data, setData] = useState<number[]>([0]);
+export function useMetricHistory(metric: number | null) {
+  const [data, setData] = useState<number[]>([]);
 
   useEffect(() => {
-    setData([...data, metric].slice(-50));
+    if (!metric) return;
+    setData([...data, metric].slice(-20));
   }, [metric]);
   return data;
 }

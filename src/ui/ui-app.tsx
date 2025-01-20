@@ -4,14 +4,17 @@ import { useMetrics } from "./use-metrics.js";
 import { useCrawler } from "./use-crawler.js";
 import { plot } from "asciichart";
 import { useMetricHistory } from "./use-metric-history.js";
+import { MetricChart } from "./metric-chart.js";
 
 export const UiApp = () => {
   const { crawlerMetrics, queuePushTiming, wikiTiming } = useMetrics();
   const crawler = useCrawler();
   const timing = useMetricHistory(wikiTiming);
+  const pushTiming = useMetricHistory(queuePushTiming);
+  const queueSizeHistory = useMetricHistory(crawlerMetrics.queueSize);
 
   return (
-    <>
+    <Box flexDirection="row">
       <Box
         borderStyle="round"
         borderColor="#FAC898"
@@ -21,26 +24,15 @@ export const UiApp = () => {
         <Text color="green">{crawlerMetrics.title}</Text>
         <Text color="green">{crawlerMetrics.numOutgoingPages}</Text>
       </Box>
-      <Text>
-        Remaining elements in queue:
-        <Text color="green">{crawlerMetrics.queueSize}</Text>
-      </Text>
-      <Text>
-        Processed pages:
-        <Text color="green">{crawlerMetrics.numProcessedPages}</Text>
-      </Text>
-
-      <Text>
-        wikipedia api query time:
-        <Text color="green">{Math.round(wikiTiming)}</Text>
-      </Text>
-      <Text>
-        queue push timing:
-        <Text color="green">{Math.round(queuePushTiming)}</Text>
-      </Text>
-      <Newline />
-      <Text color="#FAC898">{plot(timing, { height: 10 })}</Text>
-    </>
+      <Box flexDirection="column">
+        <MetricChart metricName="api timing" metricHistory={timing} />
+        <MetricChart metricName="queue timing" metricHistory={pushTiming} />
+        <MetricChart
+          metricName="remaining items in queue"
+          metricHistory={queueSizeHistory}
+        />
+      </Box>
+    </Box>
   );
 };
 
