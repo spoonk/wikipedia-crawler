@@ -12,7 +12,13 @@ export const MetricChart = ({
   metricName,
 }: MetricChartProps) => {
   return (
-    <Box borderColor="green" borderStyle="round" flexDirection="column">
+    <Box
+      borderColor="green"
+      borderStyle="round"
+      flexDirection="column"
+      width={"100%"}
+      overflowX="hidden"
+    >
       <Text color="green">{metricName}</Text>
       <Newline />
       <Text color="blue">

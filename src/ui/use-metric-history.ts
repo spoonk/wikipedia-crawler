@@ -5,7 +5,7 @@ export function useMetricHistory(metric: number | null) {
 
   useEffect(() => {
     if (!metric) return;
-    setData([...data, metric].slice(-20));
+    setData([...data, metric].slice(-50));
   }, [metric]);
   return data;
 }

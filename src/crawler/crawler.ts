@@ -7,6 +7,7 @@ import { INode } from "../packages/database/models/node.js";
 import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
 import { timedFunction } from "../packages/utils/timed-fn.js";
 import { channels } from "../packages/utils/channels.js";
+import { PageUpdate } from "../packages/utils/metrics/page-updates.js";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
@@ -40,10 +41,15 @@ export class WikipediaCrawler {
   }
 
   private async pushQueueItems(outgoing: string[]) {
+    const pageUpdates: PageUpdate[] = [];
     for (const page of outgoing) {
-      if (await this.set.contains(page)) continue;
+      if (await this.set.contains(page)) {
+        pageUpdates.push({ title: page, isNew: false });
+      }
       await this.queue.push({ title: page });
+      pageUpdates.push({ title: page, isNew: true });
     }
+    channels.lastPages.pushItem(pageUpdates);
   }
 
   timedPushQueueItems = timedFunction(
