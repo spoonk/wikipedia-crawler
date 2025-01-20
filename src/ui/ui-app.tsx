@@ -16,13 +16,6 @@ export const UiApp = () => {
 
   return (
     <Box flexDirection="row">
-      <LastPage
-        width={"40%"}
-        height={"100%"}
-        lastPages={lastPages}
-        lastPageTitle={crawlerMetrics.title}
-        numOutgoingPages={crawlerMetrics.numOutgoingPages}
-      ></LastPage>
       <Box width={"60%"} height={"100%"} flexDirection="column">
         <MetricChart metricName="api timing" metricHistory={timing} />
         <MetricChart metricName="queue timing" metricHistory={pushTiming} />
@@ -31,6 +24,13 @@ export const UiApp = () => {
           metricHistory={queueSizeHistory}
         />
       </Box>
+      <LastPage
+        width={"40%"}
+        height={"100%"}
+        lastPages={lastPages}
+        lastPageTitle={crawlerMetrics.title}
+        numOutgoingPages={crawlerMetrics.numOutgoingPages}
+      ></LastPage>
     </Box>
   );
 };

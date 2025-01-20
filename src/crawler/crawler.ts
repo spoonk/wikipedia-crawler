@@ -45,6 +45,7 @@ export class WikipediaCrawler {
     for (const page of outgoing) {
       if (await this.set.contains(page)) {
         pageUpdates.push({ title: page, isNew: false });
+        continue;
       }
       await this.queue.push({ title: page });
       pageUpdates.push({ title: page, isNew: true });

@@ -13,7 +13,7 @@ export const MetricChart = ({
 }: MetricChartProps) => {
   return (
     <Box
-      borderColor="green"
+      borderColor="#494d64"
       borderStyle="round"
       flexDirection="column"
       width={"100%"}
@@ -21,8 +21,15 @@ export const MetricChart = ({
     >
       <Text color="green">{metricName}</Text>
       <Newline />
-      <Text color="blue">
-        {metricHistory.length ? plot(metricHistory, { height: 10 }) : ""}
+      <Text color="#a5adcb">
+        {metricHistory.length
+          ? plot(metricHistory, {
+              height: 10,
+              format: function (x) {
+                return String(Math.round(x));
+              },
+            })
+          : ""}
       </Text>
       <Newline />
     </Box>
