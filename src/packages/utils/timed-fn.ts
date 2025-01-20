@@ -7,14 +7,14 @@ export function timedFunction<F extends (...args: any[]) => any>(
   fn: F,
   channel: PubSub<number>,
 ): F {
-  return <F>function (...args: any[]) {
+  return <F>async function (...args: any[]) {
     const start = performance.now();
 
-    const result = fn(...args);
+    const result = await fn(...args);
 
     const end = performance.now();
 
-    channel.pushItem(end.valueOf() - start.valueOf());
+    channel.pushItem(end - start);
     return result;
   };
 }

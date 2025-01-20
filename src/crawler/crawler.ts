@@ -5,7 +5,8 @@ import { DBQueue } from "../packages/database/db-queue.js";
 import { DBSet } from "../packages/database/db-set.js";
 import { INode } from "../packages/database/models/node.js";
 import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
-import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
+import { timedFunction } from "../packages/utils/timed-fn.js";
+import { channels } from "../packages/utils/channels.js";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
@@ -38,17 +39,26 @@ export class WikipediaCrawler {
     }
   }
 
-  async step() {
-    const { title } = await this.queue.peek();
-
-    const outgoing = await getOutgoingPageTitles(title);
-    await delay(0.1 * 1000);
-    const node: INode = { title, outgoingPages: outgoing };
-
+  private async pushQueueItems(outgoing: string[]) {
     for (const page of outgoing) {
       if (await this.set.contains(page)) continue;
       await this.queue.push({ title: page });
     }
+  }
+
+  timedPushQueueItems = timedFunction(
+    this.pushQueueItems.bind(this),
+    channels.addToQueueTiming,
+  );
+
+  async step() {
+    const { title } = await this.queue.peek();
+
+    const outgoing = await getOutgoingPageTitles(title);
+    await delay(0.1 * 1000); // prevent API spam (limit 200 requests / second, probably)
+    const node: INode = { title, outgoingPages: outgoing };
+
+    await this.timedPushQueueItems(outgoing);
 
     await this.graph.addNode(node);
     await this.queue.delete(title);
@@ -68,6 +78,6 @@ export class WikipediaCrawler {
       queueSize: await this.queue.size(),
       numProcessedPages: await this.graph.size(),
     };
-    MetricPubSub.pushMetrics(this.metrics);
+    channels.metrics.pushItem(this.metrics);
   }
 }

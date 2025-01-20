@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
-import { timedFunction } from "../utils/timed-fn";
-import { channels } from "../utils/channels";
+import { timedFunction } from "../utils/timed-fn.js";
+import { channels } from "../utils/channels.js";
 
 const BASE_URL = "https://en.wikipedia.org/w/api.php";
 

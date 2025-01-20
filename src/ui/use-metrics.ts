@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
-import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
 import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
+import { channels } from "../packages/utils/channels.js";
 
 export function useMetrics() {
-  const [metrics, setMetrics] = useState<CrawlerMetrics>({
+  const [crawlerMetrics, setMetrics] = useState<CrawlerMetrics>({
     title: "",
     numOutgoingPages: 0,
     queueSize: 0,
     numProcessedPages: 0,
   });
 
-  const overrideSet = (metrics: CrawlerMetrics) => {
-    //console.log(`setting metrics to: ${JSON.stringify(metrics)}`);
-    setMetrics(metrics);
-  };
+  const [wikiTiming, setWikiTiming] = useState<number>(0);
+  const [queuePushTiming, setQueuePushTiming] = useState<number>(0);
 
   useEffect(() => {
-    MetricPubSub.subscribe(overrideSet);
+    channels.metrics.subscribe(setMetrics);
+    channels.apiTiming.subscribe(setWikiTiming);
+    channels.addToQueueTiming.subscribe(setQueuePushTiming);
   }, []);
 
-  return metrics;
+  return {
+    crawlerMetrics,
+    wikiTiming,
+    queuePushTiming,
+  };
 }
