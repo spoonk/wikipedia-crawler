@@ -1,12 +1,14 @@
-import React from "react";
-import { Box, Text, render } from "ink";
+import React, { useEffect, useRef } from "react";
+import { Box, Newline, Text, render } from "ink";
 import { useMetrics } from "./use-metrics.js";
 import { useCrawler } from "./use-crawler.js";
-import _ from "lodash";
+import { plot } from "asciichart";
+import { useMetricHistory } from "./use-metric-history.js";
 
 export const UiApp = () => {
   const { crawlerMetrics, queuePushTiming, wikiTiming } = useMetrics();
   const crawler = useCrawler();
+  const timing = useMetricHistory(wikiTiming);
 
   return (
     <>
@@ -36,6 +38,8 @@ export const UiApp = () => {
         queue push timing:
         <Text color="green">{Math.round(queuePushTiming)}</Text>
       </Text>
+      <Newline />
+      <Text color="#FAC898">{plot(timing, { height: 10 })}</Text>
     </>
   );
 };

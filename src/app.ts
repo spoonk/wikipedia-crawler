@@ -8,5 +8,5 @@ import { MongoSingleton } from "./packages/database/mongodb.js";
   const documents = await NodeModel.find({
     $or: [{ title: "Albert Einstein" }, { title: "Adolf Hitler" }],
   });
-  console.log(documents.length);
+  //console.log(documents.length);
 })();
