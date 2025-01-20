@@ -4,7 +4,7 @@ import { DBGraph } from "../packages/database/db-graph.js";
 import { DBQueue } from "../packages/database/db-queue.js";
 import { DBSet } from "../packages/database/db-set.js";
 import { INode } from "../packages/database/models/node.js";
-import { CrawlerMetrics } from "./crawler-metrics.js";
+import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
 import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
 
 export class WikipediaCrawler {
@@ -42,7 +42,7 @@ export class WikipediaCrawler {
     const { title } = await this.queue.peek();
 
     const outgoing = await getOutgoingPageTitles(title);
-    await delay(1.2 * 1000);
+    await delay(0.1 * 1000);
     const node: INode = { title, outgoingPages: outgoing };
 
     for (const page of outgoing) {

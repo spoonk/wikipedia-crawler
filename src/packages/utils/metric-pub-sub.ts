@@ -1,4 +1,4 @@
-import { CrawlerMetrics } from "../../crawler/crawler-metrics";
+import { CrawlerMetrics } from "./metrics/crawler-metrics";
 import _ from "lodash";
 
 export class MetricPubSub {

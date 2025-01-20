@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MetricPubSub } from "../packages/utils/metric-pub-sub.js";
-import { CrawlerMetrics } from "../crawler/crawler-metrics.js";
+import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
 
 export function useMetrics() {
   const [metrics, setMetrics] = useState<CrawlerMetrics>({

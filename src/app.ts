@@ -1,12 +1,12 @@
-//// high level file to test out behavior
-//import { WikipediaCrawler } from "./crawler/crawler.js";
-//import { UiApp } from "./ui/ui-app";
-//
-//(async () => {
-//  const crawler = new WikipediaCrawler();
-//  await crawler.initialize();
-//  for (let i = 0; i < 5; i++) {
-//    await crawler.step();
-//    //console.log(crawler.getMetrics());
-//  }
-//})();
+import { NodeModel } from "./packages/database/models/node.js";
+import { MongoSingleton } from "./packages/database/mongodb.js";
+
+(async () => {
+  const mongo = MongoSingleton.getInstance();
+  await mongo.initialize();
+
+  const documents = await NodeModel.find({
+    $or: [{ title: "Albert Einstein" }, { title: "Adolf Hitler" }],
+  });
+  console.log(documents.length);
+})();
