@@ -12,6 +12,7 @@
     "typescript-eslint": "^8.19.1"
   },
   "dependencies": {
+    "asciichart": "^1.5.25",
     "axios": "^1.7.9",
     "bluebird": "^3.7.2",
     "delay": "^6.0.0",
