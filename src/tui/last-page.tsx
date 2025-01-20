@@ -39,17 +39,16 @@ export const LastPage = ({
       <Box padding={1} justifyContent="center">
         <Text bold color="#f4dbd6">
           {numProcessed} -{" "}
-          {`${Math.round((10000000 * numProcessed) / queueSize) / 100000}%`}
+          {`${Math.round((10000000 * numProcessed) / (queueSize + numProcessed)) / 100000}%`}
         </Text>
       </Box>
       {lastPages.slice(0, 50).map((page) => {
         return (
           <Text
             key={`${page.isNew}${page.title}`}
-            color={page.isNew ? "#c6a0f6" : "#c6a0f6"}
+            color="green"
             dimColor={!page.isNew}
           >
-            {page.isNew ? "" : "󰑖"}
             {`  ${page.title}`}
           </Text>
         );

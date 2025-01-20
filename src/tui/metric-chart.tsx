@@ -18,17 +18,19 @@ export const MetricChart = ({
       flexDirection="column"
       width={"100%"}
       overflowX="hidden"
+      overflowY="hidden"
+      flexWrap="nowrap"
       padding={1}
     >
-      <Text color="green">{metricName}</Text>
+      <Text color="green">
+        {metricName} -{" "}
+        {metricHistory.length ? metricHistory[metricHistory.length - 1] : ""}
+      </Text>
       <Newline />
-      <Text color="#a5adcb">
+      <Text wrap="truncate-end" color="#a5adcb">
         {metricHistory.length
           ? plot(metricHistory, {
               height: 10,
-              //format: function (x) {
-              //  return String(Math.round(x));
-              //},
             })
           : ""}
       </Text>

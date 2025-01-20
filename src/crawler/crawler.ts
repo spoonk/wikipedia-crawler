@@ -62,7 +62,7 @@ export class WikipediaCrawler {
     const { title } = await this.queue.peek();
 
     const outgoing = await getOutgoingPageTitles(title);
-    await delay(0.1 * 1000); // prevent API spam (limit 200 requests / second, probably)
+    //await delay(0.1 * 1000); // prevent API spam (limit 200 requests / second, probably)
     const node: INode = { title, outgoingPages: outgoing };
 
     await this.timedPushQueueItems(outgoing);
