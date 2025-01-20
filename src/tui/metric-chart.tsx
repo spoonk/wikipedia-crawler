@@ -26,9 +26,9 @@ export const MetricChart = ({
         {metricHistory.length
           ? plot(metricHistory, {
               height: 10,
-              format: function (x) {
-                return String(Math.round(x));
-              },
+              //format: function (x) {
+              //  return String(Math.round(x));
+              //},
             })
           : ""}
       </Text>
