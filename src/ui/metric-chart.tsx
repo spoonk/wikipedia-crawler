@@ -18,6 +18,7 @@ export const MetricChart = ({
       flexDirection="column"
       width={"100%"}
       overflowX="hidden"
+      padding={1}
     >
       <Text color="green">{metricName}</Text>
       <Newline />

@@ -25,6 +25,8 @@ export const UiApp = () => {
         />
       </Box>
       <LastPage
+        queueSize={crawlerMetrics.queueSize}
+        numProcessed={crawlerMetrics.numProcessedPages}
         width={"40%"}
         height={"100%"}
         lastPages={lastPages}
