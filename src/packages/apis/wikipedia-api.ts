@@ -5,48 +5,34 @@ import { channels } from "../utils/channels.js";
 
 const BASE_URL = "https://en.wikipedia.org/w/api.php";
 
-interface getParams {
-  action: string;
-  format: string;
-  prop: string;
-  titles: string;
-  pllimit: "max";
-  plcontinue?: string;
-}
-
 interface getResponse {
-  data: {
-    query: {
-      pages: {
-        [key: string]: {
-          pageid: number;
-          ns: number;
-          title: string;
-          links: { ns: number; title: string }[];
-        };
+  query: {
+    pages: {
+      [key: string]: {
+        pageid: number;
+        ns: number;
+        title: string;
+        links: { ns: number; title: string }[];
       };
     };
-    continue?: {
-      plcontinue: string;
-      continue: string;
-    };
+  };
+  continue?: {
+    plcontinue: string;
+    continue: string;
   };
 }
 
 const getPageTitles = async (title: string, nextPageToken?: string | null) => {
-  const { data }: getResponse = await axios.get<getParams, getResponse>(
-    BASE_URL,
-    {
-      params: {
-        action: "query",
-        format: "json",
-        prop: "links",
-        titles: title,
-        pllimit: "max",
-        ...(nextPageToken ? { plcontinue: nextPageToken } : {}),
-      },
+  const { data } = await axios.get<getResponse>(BASE_URL, {
+    params: {
+      action: "query",
+      format: "json",
+      prop: "links",
+      titles: title,
+      pllimit: "max",
+      ...(nextPageToken ? { plcontinue: nextPageToken } : {}),
     },
-  );
+  });
 
   if (data.continue?.plcontinue) {
     nextPageToken = data.continue.plcontinue;
