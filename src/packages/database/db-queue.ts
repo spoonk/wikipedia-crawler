@@ -2,8 +2,12 @@ import { QueueItem, QueueItemModel } from "./models/queue-item.js";
 import { MongoInstance, MongoSingleton } from "./mongodb.js";
 
 export class DBQueue {
+  // note: not including pop() since it shouldn't be used by the crawler
+  //  a peek + some work + delete is a transaction-style pattern that makes the crawler resistant to crashes.
+  //  If the crawler popped a node and then crashed without adding any new pages to the queue or the node to the graph, that node would be lost.
+  //  If the crawler peeks and then crashes, it will be able to peek the same node when it recovers. All work done by the crawler is idempotent
+  //    due to the deduplication on database puts, so it is fin for the recovering crawler executing the same work it did before it crashed.
   private mongo: MongoInstance;
-  private initialized = false;
 
   constructor() {
     this.mongo = MongoSingleton.getInstance();
@@ -15,7 +19,6 @@ export class DBQueue {
 
   async initialize() {
     await this.mongo.initialize();
-    this.initialized = true;
   }
 
   async contains(title: string) {
@@ -38,16 +41,6 @@ export class DBQueue {
 
   async delete(title: string) {
     await QueueItemModel.findOneAndDelete({ title });
-  }
-
-  // NOTE: should not use pop since it's not
-  //  crash safe. Final version should use a peek + delete separately
-  async pop(): Promise<QueueItem> {
-    const item = await this.getNext();
-
-    await QueueItemModel.findByIdAndDelete(item._id);
-
-    return item;
   }
 
   private async getNext() {

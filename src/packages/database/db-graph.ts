@@ -3,7 +3,6 @@ import { MongoSingleton, MongoInstance } from "./mongodb.js";
 
 export class DBGraph {
   private mongo: MongoInstance;
-  private initialized = false;
 
   constructor() {
     this.mongo = MongoSingleton.getInstance();
@@ -11,18 +10,16 @@ export class DBGraph {
 
   async initialize() {
     await this.mongo.initialize();
-    this.initialized = true;
   }
 
   async addNode(node: Node) {
     const nodeModel = new NodeModel(node);
     const existing = await NodeModel.findOne({ title: node.title });
     if (existing) {
-      //console.warn(`node with title ${node.title} already exists, skipping`);
       return;
     }
 
-    await nodeModel.save(); // TODO: dedupe on name
+    await nodeModel.save();
   }
 
   async size() {
