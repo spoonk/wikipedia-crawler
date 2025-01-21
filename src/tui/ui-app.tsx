@@ -9,7 +9,7 @@ import { LastPage } from "./last-page.js";
 export const UiApp = () => {
   const { crawlerMetrics, queuePushTiming, wikiTiming, lastPages } =
     useMetrics();
-  const crawler = useCrawler();
+  useCrawler();
   const timing = useMetricHistory(wikiTiming);
   const pushTiming = useMetricHistory(queuePushTiming);
   const queueSizeHistory = useMetricHistory(crawlerMetrics.queueSize);
