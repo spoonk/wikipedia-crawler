@@ -8,8 +8,6 @@ type LastPageProps = {
   numOutgoingPages: number | null;
   width: number | string;
   height: number | string;
-  numProcessed: number | null;
-  queueSize: number | null;
 };
 
 export const LastPage = ({
@@ -18,8 +16,6 @@ export const LastPage = ({
   numOutgoingPages,
   width,
   height,
-  numProcessed,
-  queueSize,
 }: LastPageProps) => {
   return (
     <Box
@@ -35,14 +31,6 @@ export const LastPage = ({
         <Text bold color="#f4dbd6">
           {lastPageTitle} - <Text color="#ee99a0">{numOutgoingPages}</Text>
         </Text>
-      </Box>
-      <Box padding={1} justifyContent="center">
-        {numProcessed && queueSize && (
-          <Text bold color="#f4dbd6">
-            {numProcessed} -{" "}
-            {`${Math.round((10000000 * numProcessed) / (queueSize + numProcessed)) / 100000}%`}
-          </Text>
-        )}
       </Box>
       {lastPages.slice(0, 50).map((page) => {
         return (

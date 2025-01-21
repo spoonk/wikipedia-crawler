@@ -5,11 +5,13 @@ import { useCrawler } from "../hooks/use-crawler.js";
 import { useMetricHistory } from "../hooks/use-metric-history.js";
 import { MetricChart } from "./metric-chart.js";
 import { LastPage } from "./last-page.js";
+import { getPercentProcessed } from "../../packages/utils/compute.js";
 
 export const Dashboard = () => {
   const { crawlerMetrics, queuePushTiming, wikiTiming, lastPages } =
     useMetrics();
   useCrawler();
+
   const timing = useMetricHistory(wikiTiming);
   const pushTiming = useMetricHistory(queuePushTiming);
   const queueSizeHistory = useMetricHistory(crawlerMetrics.queueSize);
@@ -18,12 +20,7 @@ export const Dashboard = () => {
   );
 
   const processedRatioHistory = useMetricHistory(
-    crawlerMetrics.numProcessedPages && crawlerMetrics.queueSize
-      ? Math.round(
-          (100 * 10000000 * crawlerMetrics.numProcessedPages) /
-            (crawlerMetrics.queueSize + crawlerMetrics.numProcessedPages),
-        ) / 10000000
-      : 0,
+    getPercentProcessed({ ...crawlerMetrics }),
     100,
   );
 
@@ -52,8 +49,6 @@ export const Dashboard = () => {
       </Box>
 
       <LastPage
-        queueSize={crawlerMetrics.queueSize}
-        numProcessed={crawlerMetrics.numProcessedPages}
         width={"40%"}
         height={"100%"}
         lastPages={lastPages}
