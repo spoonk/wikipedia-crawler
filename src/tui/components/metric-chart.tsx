@@ -14,7 +14,7 @@ export const MetricChart = ({
   return (
     <Box
       borderColor="#494d64"
-      borderStyle="round"
+      borderStyle="single"
       flexDirection="column"
       width={"100%"}
       overflowX="hidden"
