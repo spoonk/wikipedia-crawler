@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, render } from "ink";
+import { Box } from "ink";
 import { useMetrics } from "../hooks/use-metrics.js";
 import { useCrawler } from "../hooks/use-crawler.js";
 import { useMetricHistory } from "../hooks/use-metric-history.js";
 import { MetricChart } from "./metric-chart.js";
 import { LastPage } from "./last-page.js";
 
-export const UiApp = () => {
+export const Dashboard = () => {
   const { crawlerMetrics, queuePushTiming, wikiTiming, lastPages } =
     useMetrics();
   useCrawler();
@@ -63,5 +63,3 @@ export const UiApp = () => {
     </Box>
   );
 };
-
-render(<UiApp />);
