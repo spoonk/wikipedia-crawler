@@ -21,10 +21,10 @@ export class WikipediaCrawler {
     this.graph = new DBGraph();
     this.set = new DBSet();
     this.metrics = {
-      title: "",
-      numOutgoingPages: 0,
-      queueSize: -1,
-      numProcessedPages: -1,
+      title: null,
+      numOutgoingPages: null,
+      queueSize: null,
+      numProcessedPages: null,
     };
   }
 
@@ -62,7 +62,6 @@ export class WikipediaCrawler {
     const { title } = await this.queue.peek();
 
     const outgoing = await getOutgoingPageTitles(title);
-    //await delay(0.1 * 1000); // prevent API spam (limit 200 requests / second, probably)
     const node: INode = { title, outgoingPages: outgoing };
 
     await this.timedPushQueueItems(outgoing);
@@ -72,10 +71,6 @@ export class WikipediaCrawler {
     await this.set.addItem({ title });
 
     await this.syncMetrics(title, outgoing.length);
-  }
-
-  getMetrics() {
-    return this.metrics;
   }
 
   private async syncMetrics(title: string, numOutgoingPages: number) {
