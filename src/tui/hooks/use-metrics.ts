@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { CrawlerMetrics } from "../packages/utils/messages/crawler-metrics.js";
-import { channels } from "../packages/utils/channels.js";
-import { PageUpdate } from "../packages/utils/messages/page-updates.js";
+import { CrawlerMetrics } from "../../packages/utils/messages/crawler-metrics.js";
+import { channels } from "../../packages/utils/channels.js";
+import { PageUpdate } from "../../packages/utils/messages/page-updates.js";
 
 export function useMetrics() {
   const [crawlerMetrics, setMetrics] = useState<CrawlerMetrics>({

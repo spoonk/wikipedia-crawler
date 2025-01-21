@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { WikipediaCrawler } from "../crawler/crawler.js";
+import { WikipediaCrawler } from "../../crawler/crawler.js";
 
 export function useCrawler() {
   const crawler = useRef(new WikipediaCrawler());
