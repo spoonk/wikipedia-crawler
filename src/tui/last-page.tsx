@@ -37,10 +37,12 @@ export const LastPage = ({
         </Text>
       </Box>
       <Box padding={1} justifyContent="center">
-        <Text bold color="#f4dbd6">
-          {numProcessed} -{" "}
-          {`${Math.round((10000000 * numProcessed) / (queueSize + numProcessed)) / 100000}%`}
-        </Text>
+        {numProcessed && queueSize && (
+          <Text bold color="#f4dbd6">
+            {numProcessed} -{" "}
+            {`${Math.round((10000000 * numProcessed) / (queueSize + numProcessed)) / 100000}%`}
+          </Text>
+        )}
       </Box>
       {lastPages.slice(0, 50).map((page) => {
         return (
