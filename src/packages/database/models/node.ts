@@ -1,11 +1,11 @@
 import { model, Schema } from "mongoose";
 
-export interface INode {
+export interface Node {
   title: string;
   outgoingPages: string[];
 }
 
-const nodeSchema = new Schema<INode>(
+const nodeSchema = new Schema<Node>(
   {
     title: { type: String, required: true },
     outgoingPages: { type: [String], required: false, default: [] },
@@ -13,4 +13,4 @@ const nodeSchema = new Schema<INode>(
   { timestamps: { createdAt: "created", updatedAt: "updated" } },
 );
 
-export const NodeModel = model<INode>("Node", nodeSchema);
+export const NodeModel = model<Node>("Node", nodeSchema);

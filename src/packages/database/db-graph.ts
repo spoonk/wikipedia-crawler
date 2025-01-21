@@ -1,4 +1,4 @@
-import { INode, NodeModel } from "./models/node.js";
+import { Node, NodeModel } from "./models/node.js";
 import { MongoSingleton, MongoInstance } from "./mongodb.js";
 
 export class DBGraph {
@@ -14,7 +14,7 @@ export class DBGraph {
     this.initialized = true;
   }
 
-  async addNode(node: INode) {
+  async addNode(node: Node) {
     const nodeModel = new NodeModel(node);
     const existing = await NodeModel.findOne({ title: node.title });
     if (existing) {

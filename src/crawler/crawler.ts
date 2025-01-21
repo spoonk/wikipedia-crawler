@@ -1,9 +1,8 @@
-import delay from "delay";
 import { getOutgoingPageTitles } from "../packages/apis/wikipedia-api.js";
 import { DBGraph } from "../packages/database/db-graph.js";
 import { DBQueue } from "../packages/database/db-queue.js";
 import { DBSet } from "../packages/database/db-set.js";
-import { INode } from "../packages/database/models/node.js";
+import { Node } from "../packages/database/models/node.js";
 import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
 import { timedFunction } from "../packages/utils/timed-fn.js";
 import { channels } from "../packages/utils/channels.js";
@@ -62,7 +61,7 @@ export class WikipediaCrawler {
     const { title } = await this.queue.peek();
 
     const outgoing = await getOutgoingPageTitles(title);
-    const node: INode = { title, outgoingPages: outgoing };
+    const node: Node = { title, outgoingPages: outgoing };
 
     await this.timedPushQueueItems(outgoing);
 
