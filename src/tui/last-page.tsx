@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Text } from "ink";
-import { PageUpdate } from "../packages/utils/metrics/page-updates";
+import { PageUpdate } from "../packages/utils/messages/page-updates";
 
 type LastPageProps = {
   lastPages: PageUpdate[];

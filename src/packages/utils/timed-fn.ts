@@ -1,4 +1,4 @@
-// executes function, pushes timing to some pubsub
+// executes function, pushes timing to some channel
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PubSub } from "./pub-sub";

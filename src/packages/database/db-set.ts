@@ -3,7 +3,6 @@ import { MongoSingleton, MongoInstance } from "./mongodb.js";
 
 export class DBSet {
   private mongo: MongoInstance;
-  private initialized = false;
 
   constructor() {
     this.mongo = MongoSingleton.getInstance();
@@ -11,7 +10,6 @@ export class DBSet {
 
   async initialize() {
     await this.mongo.initialize();
-    this.initialized = true;
   }
 
   async contains(title: string) {

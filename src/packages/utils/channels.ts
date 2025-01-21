@@ -1,5 +1,5 @@
-import { CrawlerMetrics } from "./metrics/crawler-metrics.js";
-import { PageUpdate } from "./metrics/page-updates.js";
+import { CrawlerMetrics } from "./messages/crawler-metrics.js";
+import { PageUpdate } from "./messages/page-updates.js";
 import { PubSub } from "./pub-sub.js";
 
 export const channels = {

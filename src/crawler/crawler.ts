@@ -3,10 +3,10 @@ import { DBGraph } from "../packages/database/db-graph.js";
 import { DBQueue } from "../packages/database/db-queue.js";
 import { DBSet } from "../packages/database/db-set.js";
 import { Node } from "../packages/database/models/node.js";
-import { CrawlerMetrics } from "../packages/utils/metrics/crawler-metrics.js";
+import { CrawlerMetrics } from "../packages/utils/messages/crawler-metrics.js";
 import { timedFunction } from "../packages/utils/timed-fn.js";
 import { channels } from "../packages/utils/channels.js";
-import { PageUpdate } from "../packages/utils/metrics/page-updates.js";
+import { PageUpdate } from "../packages/utils/messages/page-updates.js";
 
 export class WikipediaCrawler {
   private queue: DBQueue;
