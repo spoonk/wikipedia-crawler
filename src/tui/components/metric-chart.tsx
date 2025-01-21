@@ -28,11 +28,10 @@ export const MetricChart = ({
       </Text>
       <Newline />
       <Text wrap="truncate-end" color="#a5adcb">
-        {metricHistory.length
-          ? plot(metricHistory, {
-              height: 10,
-            })
-          : ""}
+        {metricHistory.length &&
+          plot(metricHistory, {
+            height: 10,
+          })}
       </Text>
       <Newline />
     </Box>
