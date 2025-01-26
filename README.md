@@ -1,5 +1,7 @@
 # Wikipedia page crawler
 
+![screenshot](./screenshot.png)
+
 ## Description
 
-This is a polite crawler whose goal is to build a graph of Wikipedia.
+This is a polite, crash safe crawler whose goal is to build a graph of Wikipedia.
