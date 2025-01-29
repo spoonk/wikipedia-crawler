@@ -1,7 +1,9 @@
 # Wikipedia page crawler
 
-![screenshot](./screenshot.png)
+| A polite, crash-safe crawler whose goal is to build a graph of Wikipedia while providing real-time metrics in a terminal dashboard.
 
-## Description
+![dashboard gif](./dashboard.gif)
 
-This is a polite, crash safe crawler whose goal is to build a graph of Wikipedia.
+# Details
+
+## Wikipedia as a graph
